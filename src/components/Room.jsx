@@ -73,6 +73,17 @@ export default function Room() {
                     createPeerConnection(stream, ws);
                 };
 
+                ws.onerror = (error) => {
+                    console.error("WebSocket Error:", error);
+                    setStatus('Connection Error: Check console');
+                };
+
+                ws.onclose = (event) => {
+                    if (event.code !== 1000) {
+                         setStatus(`Disconnected (Code: ${event.code})`);
+                    }
+                };
+
                 ws.onmessage = async (event) => {
                     const msg = JSON.parse(event.data);
                     
