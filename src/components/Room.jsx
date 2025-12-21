@@ -112,6 +112,7 @@ export default function Room() {
 
                         case 'candidate':
                             if (msg.candidate) {
+                                console.log("Received Candidate:", msg.candidate.candidate);
                                 await pcRef.current.addIceCandidate(new RTCIceCandidate(msg.candidate));
                             }
                             break;
