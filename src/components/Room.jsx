@@ -147,6 +147,19 @@ export default function Room() {
                 }
             };
 
+            // Handle ICE Connection State
+            pc.oniceconnectionstatechange = () => {
+                console.log("ICE State:", pc.iceConnectionState);
+                const state = pc.iceConnectionState;
+                if (state === 'failed' || state === 'disconnected') {
+                    setStatus(`ICE Error: ${state} (Check firewall/ports)`);
+                } else if (state === 'connected' || state === 'completed') {
+                    setStatus('Media Connected');
+                } else {
+                    setStatus(`ICE: ${state}...`);
+                }
+            };
+
             // Handle Remote Stream (Track based)
             pc.ontrack = (event) => {
                 const stream = event.streams[0] || new MediaStream([event.track]);
