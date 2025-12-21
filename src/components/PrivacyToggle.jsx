@@ -2,13 +2,18 @@ import { Lock, Unlock } from 'lucide-react';
 import useStore from '../store/useStore';
 
 export default function PrivacyToggle() {
-  const { role, privacyMode, socket } = useStore();
+  const { role, privacyMode, setPrivacyMode, socket } = useStore();
 
   if (role !== 'INTERVIEWER') return null;
 
   const toggle = () => {
+    const newMode = !privacyMode;
+    setPrivacyMode(newMode);
     if (socket) {
-      socket.send(JSON.stringify({ type: 'toggle_privacy' }));
+      socket.send(JSON.stringify({ 
+        type: 'toggle_privacy',
+        is_active: newMode
+      }));
     }
   };
 
